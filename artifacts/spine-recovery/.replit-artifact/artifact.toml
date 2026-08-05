@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Spine Recovery Trainer"
+description = "A daily companion app for spinal recovery exercises. Helps users track their physical therapy progress week by week with guided exercises, motivational quotes, and a calendar view. Built for patients recovering from spine injuries who need a reliable offline-capable tool."
+version = "1.0.0"
+id = "artifacts/spine-recovery"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19969
+
+[services.development]
+run = "pnpm --filter @workspace/spine-recovery run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/spine-recovery", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/spine-recovery/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19969"
+BASE_PATH = "/"

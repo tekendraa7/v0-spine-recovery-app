@@ -1,0 +1,140 @@
+Add "Workout Plan" Section to v0-spine-recovery-app
+
+Repo: tekendraa7/v0-spine-recovery-app (Next.js App Router, TypeScript, shadcn/ui, Tailwind, pnpm, synced with v0.app)
+
+Paste this whole prompt to your coding agent inside the project repo.
+
+Task
+
+Add a new "Workout Plan" route/section to this app. Do NOT remove, overwrite, or restructure any existing routes, components, or content already in the app — this is purely additive. Since this repo auto-syncs with v0.app deployments, avoid editing generated files in ways that would conflict with future v0 pushes; prefer adding new files over heavily modifying existing shared ones.
+
+Step 1 — Investigate before coding
+Read app/ to see existing routes/pages (layout, page structure, any existing recovery-tracking or exercise features already in this spine-recovery app — this content should complement, not duplicate, what's already there).
+Read components/ to see which shadcn/ui components are already in use (Card, Accordion, Tabs, Badge, Table, Alert, etc. — check components.json and components/ui/) and reuse them rather than introducing new UI primitives.
+Check lib/ for existing data/types patterns (e.g. how exercises, routines, or recovery data might already be modeled) and follow the same conventions.
+Check styles/ and tailwind.config (or app/globals.css) for the existing design tokens/theme (colors, spacing, dark mode setup via next-themes or similar) and match them exactly.
+Identify the nav/layout component and add a link to the new route without disturbing existing nav items.
+Step 2 — Content structure to implement
+
+Build the section with these subsections, in this order. Use collapsible cards, tabs, or accordions — whichever pattern already exists in the site — so the page doesn't feel like a wall of text.
+
+A. Health context banner (short, non-medical-alarmist tone)
+
+A short intro box stating: training is being done around a few spine-related conditions (congenital C4–C5 partial fusion, mild cervical scoliosis, mild L5-S1 disc desiccation/bulge), so the plan favors machine-supported, controlled movements over heavy free-weight/spine-loading lifts. Include a one-line disclaimer: "Not medical advice — cleared/guided by a physiotherapist consultation."
+
+B. Weekly split (3 days/week)
+
+Display as a simple weekly table or card grid:
+
+Monday — Chest + Triceps
+Tuesday — Rest / walking
+Wednesday — Back + Biceps
+Thursday — Rest
+Friday — Legs + Shoulders
+Saturday — Rest / light cardio / stretching
+Sunday — Rest
+C. Warm-up routine (before every session, ~10 min)
+
+List: treadmill walk (5 min), shoulder rolls, band pull-aparts, cat-cow stretch, bird dog, bodyweight squats, hip hinge practice.
+
+D. Daily exercise blocks
+
+Three expandable cards — Day 1: Chest + Triceps, Day 2: Back + Biceps, Day 3: Legs + Shoulders. Each exercise entry should show: name, sets × reps, a short form/safety cue, a thumbnail poster image, and a short demo video (see Step 2b below). Mark the top 1–2 "best for your condition" exercises per day with a star/highlight badge. Tapping/clicking the poster opens the video (modal or inline expand — match whatever dialog/modal pattern shadcn already provides, e.g. Dialog). Use this data:
+
+Day 1 – Chest + Triceps
+
+Machine Chest Press — 3×10–12 — spine supported, top pick
+Incline Machine Press — 3×10
+Pec Deck Fly Machine — 3×12 — don't overstretch
+Push-ups — 3 sets — only if pain-free
+Rope Triceps Pushdown — 3×12
+Cable Overhead Triceps Extension — 3×12 — keep neck neutral
+Triceps Dip Machine — 3×10 — safer than parallel bar dips
+
+Day 2 – Back + Biceps
+
+Chest Supported Row Machine — 3×10 — top pick
+Lat Pulldown — 3×10 — don't lean back excessively
+Seated Cable Row — 3×10 — keep spine neutral
+Straight Arm Pulldown — 3×12
+Dumbbell Hammer Curl — 3×12
+EZ Bar Curl — 3×10
+Preacher Curl Machine — 3×12
+
+Day 3 – Legs + Shoulders
+
+Leg Press — 3×10 — top pick, don't let lower back round
+Leg Extension — 3×12
+Hamstring Curl — 3×12
+Bulgarian Split Squat — 3×10 — bodyweight first, then light dumbbells
+Standing Calf Raise — 3×15
+Machine Shoulder Press — 3×10 — skip if neck discomfort, no forceful lockout
+Lateral Raise — 3×12 — light + controlled
+Rear Delt Fly Machine — 3×12 — good for posture
+Step 2b — Sourcing exercise posters + videos (legally, without hardcoding copyrighted media)
+
+For each exercise, add two optional fields to the data model:
+
+posterUrl: a static demo image
+videoId: a YouTube video ID for an embedded form-check clip
+
+Poster images — use the free, open-license wger.de exercise database (CC-BY-SA, no API key required):
+
+Endpoint: https://wger.de/api/v2/exercise/search/?term=<exercise name>&language=english&format=json
+Or browse https://wger.de/en/exercise/overview/ to find matching entries and grab their image URLs directly.
+If a specific machine exercise (e.g. "Chest Supported Row Machine") has no exact match, fall back to the closest generic movement (e.g. "seated row") or use a simple line-icon illustration instead of leaving it blank.
+
+Videos — do not download or rehost any video file. Instead embed the official YouTube iframe player (https://www.youtube.com/embed/<videoId>), which is standard, permitted embedding — not reproduction. Two ways to populate videoId:
+
+Best: search YouTube yourself (or let the agent use the YouTube Data API if you provide a free API key) for a short, reputable form-check video per exercise (e.g. from well-known trainer channels) and paste the video ID in.
+Fastest to ship: leave videoId as an empty string for now and instead render a "Search demo video" button per exercise that opens https://www.youtube.com/results?search_query=<exercise name> proper form in a new tab — zero maintenance, and you can swap in a curated videoId later once you've picked a video you trust.
+
+Either way, keep this data in lib/workout-data.ts so you can hand-edit any posterUrl/videoId yourself later without touching component code.
+
+E. Best machines to prioritize (quick-reference list)
+
+Chest Press Machine, Pec Deck, Lat Pulldown, Chest Supported Row, Seated Cable Row, Leg Press, Leg Extension, Hamstring Curl, Calf Raise Machine, Rear Delt Machine, Cable Machine, Assisted Pull-up Machine, Smith Machine (careful use).
+
+F. Exercises to avoid (with brief "why")
+
+Display in a visually distinct "avoid" style (red/warning accent consistent with site's existing warning/error styling if any exists):
+
+Heavy Barbell Back Squat — compresses spine
+Heavy Conventional Deadlift — high L5-S1 stress
+Heavy Barbell Overhead Press — loads cervical spine
+Behind-the-Neck Press — vulnerable neck position
+Behind-the-Neck Lat Pulldown — unnecessary shoulder/neck strain
+Heavy Shrugs — direct cervical spine load
+Good Mornings — high lower back stress
+Heavy Bent-Over Rows — risk to lumbar disc if form breaks
+Heavy Barbell Lunges — balance/spinal stability risk
+Heavy Barbell Hip Thrusts — start light/bodyweight only
+G. Core work (2–3×/week)
+
+Bird Dog, Dead Bug, Side Plank, Front Plank, Pallof Press, McGill Curl-Up. Note: avoid high-rep sit-ups or twisting crunches.
+
+H. Progression rule
+
+First 8–12 weeks: 8–12 reps, 3 sets, controlled tempo, stop 1–2 reps before failure. Increase load only once all reps are completed with good form.
+
+I. Nutrition targets (since bulking at 45kg/5'8")
+
+Protein 70–90g/day, +300–500 kcal/day above maintenance, carbs (rice, potatoes, oats, fruit), healthy fats (nuts, peanut butter, eggs), sleep 7.5–9 hrs/night.
+
+J. Stretching / mobility (rest days, Saturday)
+
+Light cardio or full-body stretching focused on neck and lower back mobility without aggressive range-of-motion work — cat-cow, child's pose, gentle hip flexor stretch, doorway chest stretch.
+
+Step 3 — Implementation requirements
+New route at app/workout-plan/page.tsx (or match whatever route-naming convention the rest of app/ already uses).
+Define the data as a typed object in lib/workout-data.ts (interfaces for Exercise — including optional posterUrl and videoId fields — DayPlan, etc.) — not hardcoded inline in JSX — so it's easy to edit later and type-safe.
+Build UI with existing shadcn components: Card/CardHeader/CardContent for each day, Accordion or Tabs for the three training days, Badge for "top pick" and "avoid" markers, Alert for the health-context banner and the avoid-list warning styling, Dialog for the poster-click-to-expand-video modal, and Next.js <Image> for the poster thumbnails (with a graceful fallback icon if posterUrl is missing).
+Lazy-load the YouTube iframe only when the dialog opens (don't eager-load embeds for every exercise on page load — keeps the page fast).
+Responsive (mobile + desktop), matching existing Tailwind breakpoints.
+Respect existing dark/light mode implementation — no hardcoded colors, use the existing Tailwind theme classes/CSS variables.
+Use semantic HTML (proper headings, lists) for accessibility.
+Do not touch/refactor unrelated existing files beyond adding the nav link and the new route.
+After building, run pnpm dev and confirm no existing page/route broke, and pnpm build succeeds with no type errors.
+Step 4 — Report back
+
+List every file created and every existing file modified (should only be nav/layout files + new route/component/data files), and confirm nothing pre-existing was deleted or altered in content.
