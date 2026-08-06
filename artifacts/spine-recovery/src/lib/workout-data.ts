@@ -59,7 +59,7 @@ export const trainingDays: DayPlan[] = [
         cue: "Spine fully supported by the pad — keep lower back in contact throughout. Full range, controlled tempo.",
         topPick: true,
         posterUrl: "",
-        videoId: "",
+        videoId: "xUm0BiZCWlQ", // Machine chest press proper form
       },
       {
         id: "incline-machine-press",
@@ -68,7 +68,7 @@ export const trainingDays: DayPlan[] = [
         reps: "10",
         cue: "Set incline to ~30°. Keep shoulder blades retracted and chest up.",
         posterUrl: "",
-        videoId: "",
+        videoId: "kDaFW-qSJMo", // Incline machine press tutorial
       },
       {
         id: "pec-deck-fly",
@@ -77,7 +77,7 @@ export const trainingDays: DayPlan[] = [
         reps: "12",
         cue: "Don't overstretch — stop when arms are in line with your chest. Slow on the way back.",
         posterUrl: "",
-        videoId: "",
+        videoId: "Z57CtFmRMxA", // Pec deck fly form
       },
       {
         id: "push-ups",
@@ -86,7 +86,7 @@ export const trainingDays: DayPlan[] = [
         reps: "Max (pain-free)",
         cue: "Only if completely pain-free. Keep core tight and spine neutral — no sagging hips.",
         posterUrl: "",
-        videoId: "",
+        videoId: "IODxDxX7oi4", // Jeff Nippard - The Perfect Push Up
       },
       {
         id: "rope-triceps-pushdown",
@@ -96,7 +96,7 @@ export const trainingDays: DayPlan[] = [
         cue: "Elbows fixed at sides. Split the rope at the bottom for full contraction.",
         topPick: true,
         posterUrl: "",
-        videoId: "",
+        videoId: "vB5OHsJ3EME", // Rope pushdown form
       },
       {
         id: "cable-overhead-triceps",
@@ -105,7 +105,7 @@ export const trainingDays: DayPlan[] = [
         reps: "12",
         cue: "Keep neck neutral — don't crane forward. Light weight, focus on stretch.",
         posterUrl: "",
-        videoId: "",
+        videoId: "YbX7Wd8jQ-Q", // Overhead cable triceps extension
       },
       {
         id: "triceps-dip-machine",
@@ -114,7 +114,7 @@ export const trainingDays: DayPlan[] = [
         reps: "10",
         cue: "Safer than parallel bar dips — back stays supported. Don't lock out aggressively.",
         posterUrl: "",
-        videoId: "",
+        videoId: "l4yKl65G19Y", // Triceps dip machine
       },
     ],
   },
@@ -132,7 +132,7 @@ export const trainingDays: DayPlan[] = [
         cue: "Chest pressed firmly against pad — takes lumbar loading out of the equation. Squeeze shoulder blades at the top.",
         topPick: true,
         posterUrl: "",
-        videoId: "",
+        videoId: "xQNrFHEMhI4", // Chest supported row
       },
       {
         id: "lat-pulldown",
@@ -142,7 +142,7 @@ export const trainingDays: DayPlan[] = [
         cue: "Pull to upper chest, not behind neck. Don't lean back excessively — slight lean only.",
         topPick: true,
         posterUrl: "",
-        videoId: "",
+        videoId: "CAwf7n6Luuc", // Lat pulldown proper form
       },
       {
         id: "seated-cable-row",
@@ -151,7 +151,7 @@ export const trainingDays: DayPlan[] = [
         reps: "10",
         cue: "Keep spine neutral throughout — don't round or hyperextend at the lower back. Drive elbows back.",
         posterUrl: "",
-        videoId: "",
+        videoId: "GZbfZ033f74", // Seated cable row form
       },
       {
         id: "straight-arm-pulldown",
@@ -160,7 +160,7 @@ export const trainingDays: DayPlan[] = [
         reps: "12",
         cue: "Arms almost straight. Hinge at the hips slightly, feel the lats working from shoulder to hip.",
         posterUrl: "",
-        videoId: "",
+        videoId: "Hdc7Mw6BIIU", // Straight arm pulldown
       },
       {
         id: "dumbbell-hammer-curl",
@@ -169,7 +169,7 @@ export const trainingDays: DayPlan[] = [
         reps: "12",
         cue: "Neutral grip (thumbs up). Elbows stay at sides — no swinging.",
         posterUrl: "",
-        videoId: "",
+        videoId: "zC3nLlEvin4", // Hammer curl form
       },
       {
         id: "ez-bar-curl",
@@ -178,7 +178,7 @@ export const trainingDays: DayPlan[] = [
         reps: "10",
         cue: "The angled grip reduces wrist strain. Full range, slow eccentric (lower in 2–3 sec).",
         posterUrl: "",
-        videoId: "",
+        videoId: "av7-8igSXTs", // EZ bar curl
       },
       {
         id: "preacher-curl-machine",
@@ -187,7 +187,7 @@ export const trainingDays: DayPlan[] = [
         reps: "12",
         cue: "Pad supports the arm — isolates the bicep. Don't hyperextend at the bottom.",
         posterUrl: "",
-        videoId: "",
+        videoId: "fIWP-FRFNU0", // Preacher curl machine
       },
     ],
   },
@@ -205,7 +205,7 @@ export const trainingDays: DayPlan[] = [
         cue: "Keep lower back flat against the pad — don't let it round off at the bottom. Feet shoulder-width apart.",
         topPick: true,
         posterUrl: "",
-        videoId: "",
+        videoId: "IZxyjW7MPJQ", // Leg press proper form
       },
       {
         id: "leg-extension",
@@ -214,7 +214,7 @@ export const trainingDays: DayPlan[] = [
         reps: "12",
         cue: "Full extension but don't hyperextend the knee. Pause at the top, slow on the way down.",
         posterUrl: "",
-        videoId: "",
+        videoId: "YyvSfVjQeL0", // Leg extension form
       },
       {
         id: "hamstring-curl",
@@ -223,7 +223,7 @@ export const trainingDays: DayPlan[] = [
         reps: "12",
         cue: "Lying or seated — either works. Don't jerk the weight; controlled curl and slow return.",
         posterUrl: "",
-        videoId: "",
+        videoId: "ELOCsoDSmrg", // Hamstring curl form
       },
       {
         id: "bulgarian-split-squat",
@@ -232,7 +232,7 @@ export const trainingDays: DayPlan[] = [
         reps: "10",
         cue: "Bodyweight first, then light dumbbells. Keep front shin vertical and torso upright.",
         posterUrl: "",
-        videoId: "",
+        videoId: "2C-uNgKwPLE", // Bulgarian split squat tutorial
       },
       {
         id: "standing-calf-raise",
@@ -241,7 +241,7 @@ export const trainingDays: DayPlan[] = [
         reps: "15",
         cue: "Full range of motion — let heel drop below platform level on the way down. Pause at top.",
         posterUrl: "",
-        videoId: "",
+        videoId: "gwLzBJYoWlA", // Standing calf raise
       },
       {
         id: "machine-shoulder-press",
@@ -251,7 +251,7 @@ export const trainingDays: DayPlan[] = [
         cue: "Skip if there is any neck discomfort. No forceful lockout at the top — stop just short.",
         topPick: true,
         posterUrl: "",
-        videoId: "",
+        videoId: "Wqq43dKW1TU", // Machine shoulder press
       },
       {
         id: "lateral-raise",
@@ -260,7 +260,7 @@ export const trainingDays: DayPlan[] = [
         reps: "12",
         cue: "Light and controlled. Lead with your elbow, not your hand. Stop at shoulder height.",
         posterUrl: "",
-        videoId: "",
+        videoId: "3VcKaXpzqRo", // Lateral raise proper form
       },
       {
         id: "rear-delt-fly-machine",
@@ -269,7 +269,7 @@ export const trainingDays: DayPlan[] = [
         reps: "12",
         cue: "Great for posture — counters forward head position. Squeeze at the back of the movement.",
         posterUrl: "",
-        videoId: "",
+        videoId: "Hbn7hGFDpHM", // Rear delt fly machine
       },
     ],
   },
