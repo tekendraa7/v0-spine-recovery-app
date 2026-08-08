@@ -12,7 +12,7 @@ import OfflinePage from '@/pages/offline';
 import WorkoutPlanPage from '@/pages/workout-plan';
 import AuthPage from '@/pages/auth';
 import OnboardingProfilePage from '@/pages/onboarding-profile';
-import { getSessionUser } from '@/lib/auth/session';
+import { getSessionUser, refreshSession } from '@/lib/auth/session';
 import { AuthDialogProvider, useAuthDialog } from '@/components/auth-dialog';
 import ProfilePage from '@/pages/profile';
 
@@ -48,6 +48,9 @@ function Router() {
 }
 
 function App() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => { void refreshSession().finally(() => setReady(true)); }, []);
+  if (!ready) return <div className="grid min-h-screen place-items-center bg-[var(--color-background)]"><span className="sr-only">Loading</span><div className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--color-primary)] border-t-transparent" /></div>;
   return (
     <TooltipProvider>
       <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>

@@ -1,4 +1,4 @@
-export type AuthProvider = 'google' | 'facebook' | 'phone' | 'email';
+export type AuthProvider = 'google' | 'apple';
 export type RecoveryCondition = 'lower_back' | 'neck' | 'both';
 
 export interface WorkoutLog {

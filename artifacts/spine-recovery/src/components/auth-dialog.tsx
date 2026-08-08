@@ -1,7 +1,6 @@
 import { createContext, useCallback, useContext, useState, type ReactNode } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import AuthPage from '@/pages/auth';
-import type { User } from '@/lib/types/user';
 
 type AuthDialogContextValue = { requireAuth: (action?: () => void, message?: string) => void };
 const AuthDialogContext = createContext<AuthDialogContextValue | null>(null);
@@ -15,17 +14,12 @@ export function AuthDialogProvider({ children }: { children: ReactNode }) {
     setMessage(nextMessage ?? 'Create a free account to save your progress.');
     setOpen(true);
   }, []);
-  const complete = useCallback((_user: User) => {
-    setOpen(false);
-    pendingAction?.();
-    setPendingAction(undefined);
-  }, [pendingAction]);
   return <AuthDialogContext.Provider value={{ requireAuth }}>
     {children}
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-h-[90vh] max-w-md overflow-y-auto border-0 bg-transparent p-0 shadow-none">
         <DialogHeader className="sr-only"><DialogTitle>Log in or sign up</DialogTitle><DialogDescription>{message}</DialogDescription></DialogHeader>
-        <div className="rounded-xl border bg-card shadow-lg"><p className="px-6 pt-5 text-center text-sm text-muted-foreground">{message}</p><AuthPage embedded onAuthenticated={complete} /></div>
+        <div className="rounded-xl border bg-card shadow-lg"><p className="px-6 pt-5 text-center text-sm text-muted-foreground">{message}</p><AuthPage embedded /></div>
       </DialogContent>
     </Dialog>
   </AuthDialogContext.Provider>;
