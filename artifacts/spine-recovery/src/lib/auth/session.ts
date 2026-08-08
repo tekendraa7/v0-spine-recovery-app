@@ -4,6 +4,8 @@ let currentUser: User | null = null;
 
 export function getSessionUser(): User | null { return currentUser; }
 
+export function setSessionUser(user: User | null): void { currentUser = user; }
+
 export async function refreshSession(): Promise<User | null> {
   const response = await fetch("/api/auth/session", { credentials: "include" });
   if (!response.ok) { currentUser = null; return null; }
