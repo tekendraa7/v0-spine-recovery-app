@@ -12,8 +12,16 @@ import { Onboarding } from "@/components/onboarding"
 import { DosDontsCard } from "@/components/dos-donts-card"
 import { Dumbbell, SettingsIcon } from "lucide-react"
 import { Link } from "wouter"
+import { getSessionUser } from "@/lib/auth/session"
+import { addWorkoutLog } from "@/lib/db/users"
+import { useAuthDialog } from "@/components/auth-dialog"
+import { clearSession } from "@/lib/auth/session"
+import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export default function HomePage() {
+  const { requireAuth } = useAuthDialog()
   const [currentWeek, setCurrentWeek] = useState(1)
   const [todayExercises, setTodayExercises] = useState<Exercise[]>([])
   const [completedToday, setCompletedToday] = useState<Set<string>>(new Set())
@@ -68,6 +76,11 @@ export default function HomePage() {
   }, [today])
 
   const handleCompleteExercise = async (exerciseId: string) => {
+    const user = getSessionUser()
+    if (!user) {
+      requireAuth(() => { void handleCompleteExercise(exerciseId) })
+      return
+    }
     try {
       const isCompleted = completedToday.has(exerciseId)
       const newCompleted = new Set(completedToday)
@@ -87,6 +100,16 @@ export default function HomePage() {
         completed: !isCompleted,
       }
       await db.addProgress(entry)
+
+      if (!isCompleted) {
+        const exercise = todayExercises.find((item) => item.id === exerciseId)
+        await addWorkoutLog(user.id, {
+          id: crypto.randomUUID(),
+          date: today,
+          routineName: exercise?.nameEn ?? "Recovery exercise",
+          durationMinutes: Number.parseInt(exercise?.duration ?? "", 10) || undefined,
+        })
+      }
 
       if (newCompleted.size === todayExercises.length && todayExercises.length > 0) {
         setShowCelebration(true)
@@ -162,6 +185,7 @@ export default function HomePage() {
 
   const completionPercentage =
     todayExercises.length > 0 ? Math.round((completedToday.size / todayExercises.length) * 100) : 0
+  const authUser = getSessionUser()
 
   return (
     <div className="min-h-screen bg-[var(--color-background)] pb-24">
@@ -175,12 +199,10 @@ export default function HomePage() {
                 {language === "en" ? "Your daily exercises" : "तपाईंको दैनिक व्यायाम"}
               </p>
             </div>
-            <Link
-              href="/settings"
-              className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-            >
-              <SettingsIcon className="w-5 h-5" />
-            </Link>
+            <div className="flex items-center gap-2">
+              {authUser ? <DropdownMenu><DropdownMenuTrigger asChild><button className="flex h-10 items-center gap-2 rounded-full bg-white/20 px-2 transition-colors hover:bg-white/30" aria-label="Open account menu"><Avatar className="h-7 w-7"><AvatarFallback className="bg-white/90 text-xs font-semibold text-[var(--color-primary)]">{authUser.name?.slice(0, 1).toUpperCase() || 'U'}</AvatarFallback></Avatar><span className="hidden max-w-24 truncate text-sm font-medium sm:inline">{authUser.name || 'My account'}</span></button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuLabel>{authUser.name || 'My account'}</DropdownMenuLabel><DropdownMenuSeparator /><DropdownMenuItem asChild><Link href="/profile">My Profile</Link></DropdownMenuItem><DropdownMenuItem onSelect={() => { clearSession(); window.location.reload() }}>Log out</DropdownMenuItem></DropdownMenuContent></DropdownMenu> : <Button variant="secondary" className="h-10 rounded-xl bg-white px-4 text-[var(--color-primary)] hover:bg-white/90" onClick={() => requireAuth()}>Log in</Button>}
+              <Link href="/settings" className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 transition-colors hover:bg-white/30"><SettingsIcon className="w-5 h-5" /></Link>
+            </div>
           </div>
 
           {/* Progress Stats */}

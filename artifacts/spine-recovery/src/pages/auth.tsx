@@ -27,7 +27,7 @@ const countries = [
 function GoogleMark() { return <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.8 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.5a4.7 4.7 0 0 1-2 3.1v2.5h3.2c1.9-1.8 3.1-4.3 3.1-7.4Z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.7-2.4l-3.2-2.5c-.9.6-2 .9-3.5.9-2.7 0-5-1.8-5.8-4.3H2.9v2.6A10 10 0 0 0 12 22Z"/><path fill="#FBBC05" d="M6.2 13.7A6 6 0 0 1 5.9 12c0-.6.1-1.2.3-1.7V7.7H2.9A10 10 0 0 0 2 12c0 1.6.4 3.1.9 4.3l3.3-2.6Z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 2.9 7.7l3.3 2.6C7 7.8 9.3 6 12 6Z"/></svg>; }
 function FacebookMark() { return <span aria-hidden="true" className="flex h-5 w-5 items-center justify-center rounded-full bg-[#1877f2] text-xs font-bold text-white">f</span>; }
 
-export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode }) {
+export default function AuthPage({ initialMode = 'login', embedded = false, onAuthenticated }: { initialMode?: Mode; embedded?: boolean; onAuthenticated?: (user: User) => void }) {
   const [, navigate] = useLocation();
   const [mode, setMode] = useState<Mode>(initialMode);
   const [screen, setScreen] = useState<Screen>('form');
@@ -47,6 +47,10 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
 
   async function finish(user: User, isNew: boolean) {
     setSessionUser(user);
+    if (onAuthenticated) {
+      onAuthenticated(user);
+      return;
+    }
     navigate(isNew || !user.onboardingComplete ? '/onboarding-profile' : '/');
   }
 
@@ -96,8 +100,8 @@ export default function AuthPage({ initialMode = 'login' }: { initialMode?: Mode
   }
 
   return (
-    <main className="min-h-screen bg-[var(--color-background)] px-4 py-8 sm:py-12">
-      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md items-center">
+    <main className={embedded ? 'bg-[var(--color-background)] p-0' : 'min-h-screen bg-[var(--color-background)] px-4 py-8 sm:py-12'}>
+      <div className={embedded ? 'mx-auto max-w-md' : 'mx-auto flex min-h-[calc(100vh-4rem)] max-w-md items-center'}>
         <Card className="w-full border-[var(--color-border)] shadow-lg animate-slide-up">
           <CardHeader className="space-y-4 text-center">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-[var(--color-primary)]"><LockKeyhole className="h-7 w-7" aria-hidden="true" /></div>

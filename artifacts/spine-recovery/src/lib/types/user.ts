@@ -1,6 +1,14 @@
 export type AuthProvider = 'google' | 'facebook' | 'phone' | 'email';
 export type RecoveryCondition = 'lower_back' | 'neck' | 'both';
 
+export interface WorkoutLog {
+  id: string;
+  date: string;
+  routineName: string;
+  durationMinutes?: number;
+  painLevel?: number;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -12,4 +20,5 @@ export interface User {
   condition?: RecoveryCondition;
   painDuration?: string;
   onboardingComplete: boolean;
+  workoutLogs?: WorkoutLog[];
 }

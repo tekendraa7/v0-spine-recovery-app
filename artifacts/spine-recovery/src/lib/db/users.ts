@@ -1,4 +1,4 @@
-import type { User } from '@/lib/types/user';
+import type { User, WorkoutLog } from '@/lib/types/user';
 
 // TODO: replace with real DB call (Postgres, Supabase, or Prisma).
 const users: User[] = [];
@@ -24,4 +24,17 @@ export async function updateUser(id: string, updates: Partial<User>): Promise<Us
   if (!user) return undefined;
   Object.assign(user, updates);
   return user;
+}
+
+// TODO: replace with real DB call.
+export async function getWorkoutLogs(userId: string): Promise<WorkoutLog[]> {
+  return users.find((user) => user.id === userId)?.workoutLogs ?? [];
+}
+
+// TODO: replace with real DB call.
+export async function addWorkoutLog(userId: string, log: WorkoutLog): Promise<WorkoutLog | undefined> {
+  const user = users.find((candidate) => candidate.id === userId);
+  if (!user) return undefined;
+  user.workoutLogs = [...(user.workoutLogs ?? []), log];
+  return log;
 }

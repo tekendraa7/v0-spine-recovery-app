@@ -3,7 +3,6 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { useEffect, useState, type ComponentType } from 'react';
-import { useLocation } from 'wouter';
 import HomePage from '@/pages/home';
 import CalendarPage from '@/pages/calendar';
 import ExercisesPage from '@/pages/exercises';
@@ -14,18 +13,18 @@ import WorkoutPlanPage from '@/pages/workout-plan';
 import AuthPage from '@/pages/auth';
 import OnboardingProfilePage from '@/pages/onboarding-profile';
 import { getSessionUser } from '@/lib/auth/session';
+import { AuthDialogProvider, useAuthDialog } from '@/components/auth-dialog';
+import ProfilePage from '@/pages/profile';
 
-function ProtectedPage({ component: Component }: { component: ComponentType }) {
-  const [, navigate] = useLocation();
-  const [authenticated, setAuthenticated] = useState<boolean | null>(null);
-
+function AccountRequiredRoute({ component: Component, message }: { component: ComponentType; message: string }) {
+  const { requireAuth } = useAuthDialog();
+  const [user, setUser] = useState(getSessionUser());
   useEffect(() => {
-    const hasSession = Boolean(getSessionUser());
-    setAuthenticated(hasSession);
-    if (!hasSession) navigate('/login');
-  }, [navigate]);
-
-  if (authenticated !== true) return null;
+    if (!user) requireAuth(() => setUser(getSessionUser()), message);
+  }, [message, requireAuth, user]);
+  if (!user) {
+    return null;
+  }
   return <Component />;
 }
 
@@ -35,13 +34,14 @@ function Router() {
       <Route path="/login" component={() => <AuthPage />} />
       <Route path="/signup" component={() => <AuthPage initialMode="signup" />} />
       <Route path="/onboarding-profile" component={OnboardingProfilePage} />
-      <Route path="/" component={() => <ProtectedPage component={HomePage} />} />
-      <Route path="/calendar" component={() => <ProtectedPage component={CalendarPage} />} />
-      <Route path="/exercises" component={() => <ProtectedPage component={ExercisesPage} />} />
-      <Route path="/progress" component={() => <ProtectedPage component={ProgressPage} />} />
-      <Route path="/settings" component={() => <ProtectedPage component={SettingsPage} />} />
-      <Route path="/offline" component={() => <ProtectedPage component={OfflinePage} />} />
-      <Route path="/workout-plan" component={() => <ProtectedPage component={WorkoutPlanPage} />} />
+      <Route path="/profile" component={() => <AccountRequiredRoute component={ProfilePage} message="Create a free account to view and manage your profile." />} />
+      <Route path="/" component={HomePage} />
+      <Route path="/calendar" component={CalendarPage} />
+      <Route path="/exercises" component={ExercisesPage} />
+      <Route path="/progress" component={() => <AccountRequiredRoute component={ProgressPage} message="Create a free account to view your personal recovery progress." />} />
+      <Route path="/settings" component={SettingsPage} />
+      <Route path="/offline" component={OfflinePage} />
+      <Route path="/workout-plan" component={WorkoutPlanPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -51,7 +51,7 @@ function App() {
   return (
     <TooltipProvider>
       <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-        <Router />
+        <AuthDialogProvider><Router /></AuthDialogProvider>
       </WouterRouter>
       <Toaster />
     </TooltipProvider>
